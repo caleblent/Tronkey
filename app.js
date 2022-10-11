@@ -1,16 +1,24 @@
 // grab buttons in doc
-let mintableButton = document.getElementById('mintable')
-let burnableButton = document.getElementById('burnable')
-let cappedButton = document.getElementById('capped')
+const mintableButton = document.getElementById('mintable')
+const burnableButton = document.getElementById('burnable')
+const cappedButton = document.getElementById('capped')
+const nameInput = document.getElementById('name')
+const symbolInput = document.getElementById('symbol')
+const decimalsInput = document.getElementById('decimals')
+const capInput = document.getElementById('cap')
+
+const contractText = document.getElementById('contract-text')
+
+
 
 // declare variables
 let SPDX = "MIT"
 let version = "^0.8.4"
 
-let name = "CoolCalebCoin";
-let symbol = "CCC";
-let decimals = "4";
-let cap = "7575972";
+let name = "";
+let symbol = "";
+let decimals = "";
+let cap = "";
 
 let mintable = false;
 let burnable = false;
@@ -20,19 +28,52 @@ let capped = false;
 mintableButton.addEventListener('click', () => {
     mintable = !mintable;
     console.log('mintable: ', mintable)
+    buildContract()
 })
 burnableButton.addEventListener('click', () => {
     burnable = !burnable;
     console.log('burnable: ', burnable)
+    buildContract()
 })
 cappedButton.addEventListener('click', () => {
     capped = !capped;
     console.log('capped: ', capped)
+    buildContract()
+})
+
+nameInput.addEventListener('input', (e) => {
+    name = e.target.value
+    console.log(name)
+    buildContract()
+})
+symbolInput.addEventListener('input', (e) => {
+    symbol = e.target.value
+    console.log(symbol)
+    buildContract()
+})
+decimalsInput.addEventListener('input', (e) => {
+    decimals = e.target.value
+    console.log(decimals)
+    buildContract()
+})
+capInput.addEventListener('input', (e) => {
+    cap = e.target.value
+    console.log(cap)
+    buildContract()
 })
 
 
-// build contract based on variables up above
-let contract = `
+
+
+// display contract string to console for now
+// console.log(contract);
+
+// document.addEventListener('keypress', () => {
+//     contractText.innerText = buildContract();
+// })
+
+function buildContract() {
+    let contract = `
 // SPDX-License-Identifier: ${SPDX}
 pragma solidity ${version};
 
@@ -48,9 +89,8 @@ contract ${name} {
     string private _symbol;
     uint8 private _decimals;
 `
-
 if (capped) {
-    contract += '\nuint256 private immutable _cap;'
+    contract += 'uint256 private immutable _cap;\n'
 }
 
 contract += `
@@ -68,8 +108,9 @@ contract += `
         }
 
 contract += `
-    }
+    }`
 
+const middleSection = `
     function name() public view virtual returns (string memory) {
         return _name;
     }
@@ -193,6 +234,10 @@ contract += `
         }
     }
 `
+
+// contract += middleSection;
+
+
 if (burnable) { 
     contract += `
     function burn(uint256 amount) public virtual {
@@ -244,5 +289,5 @@ contract += `
 }
 `
 
-// display contract string to console for now
-// console.log(contract);
+contractText.innerText = contract;
+}

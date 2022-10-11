@@ -14,10 +14,61 @@
 
     <div class="container">
         <div class="buttons flex-container">
-            <div class="button" id="mintable"></div>
-            <div class="button" id="burnable"></div>
-            <div class="button" id="capped"></div>
+            <div class="button" id="mintable">Mintable</div>
+            <div class="button" id="burnable">Burnable</div>
+            <div class="button" id="capped">Capped</div>
         </div>
+
+        <div class="text-stuff">
+            <div class="text-left">
+                <label for="name" class="text-gray-900">Name:</label>
+                <input
+                  type="text"
+                  class="border block w-full p-2 mt-2 rounded"
+                  id="name"
+                  placeholder="ERC20"
+                />
+            </div>
+
+            <div class="text-left">
+                <label for="symbol" class="text-gray-900">Symbol:</label>
+                <input
+                  type="text"
+                  class="border block w-full p-2 mt-2 rounded"
+                  id="symbol"
+                  placeholder="ABC"
+                />
+            </div>
+    
+            <div class="text-left">
+                <label for="decimals" class="text-gray-900">Decimals:</label>
+                <input
+                  type="number"
+                  class="border block w-full p-2 mt-2 rounded"
+                  id="decimals"
+                  value=18
+                  max=18
+                  min=0
+                />
+            </div>
+
+            <div class="text-left">
+                <label for="cap" class="text-gray-900">Cap:</label>
+                <input
+                  type="number"
+                  class="border block w-full p-2 mt-2 rounded"
+                  id="cap"
+                  placeholder="1000000"
+                  min=0
+                />
+            </div>
+        </div>
+
+        <div class="contract">
+            <div id="contract-text"></div>
+        </div>
+        
+
     </div>
 
     <script src="app.js"></script>

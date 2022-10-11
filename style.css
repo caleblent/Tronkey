@@ -3,18 +3,24 @@
     /* margin: 0;
     padding: 0; */
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttons {
     padding: auto;
-    display:flex;
+    display: flex;
     flex-direction: row;
 }
 
 .button {
-    width: 50px;
+    /* width: 50px; */
     height: 50px;
     background-color: #0e77bd;
     padding: 20px;
     margin: 20px;
+}
+
+.text-stuff input {
+    margin: 5px 0;
 }
