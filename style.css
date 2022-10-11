@@ -4,3 +4,17 @@
     padding: 0; */
     text-align: center;
 }
+
+.buttons {
+    padding: auto;
+    display:flex;
+    flex-direction: row;
+}
+
+.button {
+    width: 50px;
+    height: 50px;
+    background-color: #0e77bd;
+    padding: 20px;
+    margin: 20px;
+}

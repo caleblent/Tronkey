@@ -1,20 +1,42 @@
-const SPDX = "MIT"
-const version = "^0.8.4"
+// grab buttons in doc
+let mintableButton = document.getElementById('mintable')
+let burnableButton = document.getElementById('burnable')
+let cappedButton = document.getElementById('capped')
 
-const name = "CoolCalebCoin";
-const symbol = "CCC";
-const decimals = "4";
-const cap = "7575972";
+// declare variables
+let SPDX = "MIT"
+let version = "^0.8.4"
 
-const mintable = true;
-const burnable = true;
-const capped = false;
+let name = "CoolCalebCoin";
+let symbol = "CCC";
+let decimals = "4";
+let cap = "7575972";
 
+let mintable = false;
+let burnable = false;
+let capped = false;
+
+// add event listeners
+mintableButton.addEventListener('click', () => {
+    mintable = !mintable;
+    console.log('mintable: ', mintable)
+})
+burnableButton.addEventListener('click', () => {
+    burnable = !burnable;
+    console.log('burnable: ', burnable)
+})
+cappedButton.addEventListener('click', () => {
+    capped = !capped;
+    console.log('capped: ', capped)
+})
+
+
+// build contract based on variables up above
 let contract = `
 // SPDX-License-Identifier: ${SPDX}
 pragma solidity ${version};
 
-constract ${name} {
+contract ${name} {
 
     mapping(address => uint256) private _balances;
 
@@ -26,7 +48,6 @@ constract ${name} {
     string private _symbol;
     uint8 private _decimals;
 `
-// capped ? contract += '\nuint256 private immutable _cap;' : contract += '\n';
 
 if (capped) {
     contract += '\nuint256 private immutable _cap;'
@@ -45,8 +66,8 @@ contract += `
         if (capped) {
             contract += `_cap = ${cap}`;
         }
-contract +=
-        `
+
+contract += `
     }
 
     function name() public view virtual returns (string memory) {
@@ -119,8 +140,6 @@ contract +=
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
 
-        _beforeTokenTransfer(from, to, amount);
-
         uint256 fromBalance = _balances[from];
         require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
         unchecked {
@@ -131,8 +150,6 @@ contract +=
         }
 
         emit Transfer(from, to, amount);
-
-        _afterTokenTransfer(from, to, amount);
     }
 
     function _mint(address account, uint256 amount) internal virtual {
@@ -148,24 +165,6 @@ contract +=
         emit Transfer(address(0), account, amount);
 
         _afterTokenTransfer(address(0), account, amount);
-    }
-
-    function _burn(address account, uint256 amount) internal virtual {
-        require(account != address(0), "ERC20: burn from the zero address");
-
-        _beforeTokenTransfer(account, address(0), amount);
-
-        uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        unchecked {
-            _balances[account] = accountBalance - amount;
-            // Overflow not possible: amount <= accountBalance <= totalSupply.
-            _totalSupply -= amount;
-        }
-
-        emit Transfer(account, address(0), amount);
-
-        _afterTokenTransfer(account, address(0), amount);
     }
 
     function _approve(
@@ -193,7 +192,9 @@ contract +=
             }
         }
     }
-
+`
+if (burnable) { 
+    contract += `
     function burn(uint256 amount) public virtual {
         _burn(msg.sender, amount);
     }
@@ -203,16 +204,45 @@ contract +=
         _burn(account, amount);
     }
 
+    function _burn(address account, uint256 amount) internal virtual {
+        require(account != address(0), "ERC20: burn from the zero address");
+
+        _beforeTokenTransfer(account, address(0), amount);
+
+        uint256 accountBalance = _balances[account];
+        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
+        unchecked {
+            _balances[account] = accountBalance - amount;
+            // Overflow not possible: amount <= accountBalance <= totalSupply.
+            _totalSupply -= amount;
+        }
+
+        emit Transfer(account, address(0), amount);
+
+        _afterTokenTransfer(account, address(0), amount);
+    }
+    `
+}
+if (capped) {
+    contract += `
     function cap() public view virtual returns (uint256) {
         return _cap;
     }
-
+    `
+}    
+if (mintable) {
+    contract +=
+    `
     function mint(address account, uint256 amount) public virtual {
         require(totalSupply() + amount <= cap(), "ERC20Capped: cap exceeded");
         _mint(account, amount);
     }
-
+`
 }
-`;
 
-console.log(contract);
+contract += `
+}
+`
+
+// display contract string to console for now
+// console.log(contract);
