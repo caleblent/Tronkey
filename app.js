@@ -1,74 +1,115 @@
-// grab buttons in doc
-const mintableButton = document.getElementById("mintable")
-const burnableButton = document.getElementById("burnable")
-const cappedButton = document.getElementById("capped")
+// grab inputs/buttons in doc
 const nameInput = document.getElementById("name")
 const symbolInput = document.getElementById("symbol")
 const decimalsInput = document.getElementById("decimals")
-const capInput = document.getElementById("cap")
 
-const contractText = document.getElementById("contract-text")
+const premintButton = document.getElementById("preminted")
+const mintableButton = document.getElementById("mintable")
+const burnableButton = document.getElementById("burnable")
+const cappedButton = document.getElementById("capped")
+
+const premintInput = document.getElementById("premint")
+const premintLabel = document.getElementById("premintLabel")
+const capInput = document.getElementById("cap")
+const capLabel = document.getElementById("capLabel")
+
+const contractCode = document.getElementById("contractCode")
+
+// const form = document.querySelector('form[name="calebForm"]')
+// const ccValidation = form.elements["name"].value
+// const ccType = form.elements["symbol"].value
+// console.log(ccValidation)
+// console.log(ccType)
 
 // declare variables
-let SPDX = "MIT"
-let version = "^0.8.4"
+let SPDX = "MIT" // will allow to be edited in a later version
+let version = "^0.8.4" // will allow to be edited in a later version
 
-let name = ""
-let symbol = ""
-let decimals = ""
-let cap = ""
+let name = nameInput.value
+let symbol = symbolInput.value
+let decimals = decimalsInput.value
+let cap = capInput.value
 
+let preminted = false
 let mintable = false
 let burnable = false
 let capped = false
 
+// console.log(name)
+// console.log(symbol)
+// console.log(decimals)
+// console.log(cap)
+// console.log(premint)
+// console.log(mintable)
+// console.log(burnable)
+// console.log(capped)
+
 // add event listeners
+premintButton.addEventListener("click", () => {
+    preminted = !preminted
+    console.log("premint: ", preminted)
+    if (preminted) {
+        premintInput.style.display = "block"
+        premintLabel.style.display = "block"
+    } else {
+        premintInput.style.display = "none"
+        premintLabel.style.display = "none"
+    }
+    buildContract()
+})
 mintableButton.addEventListener("click", () => {
-  mintable = !mintable
-  console.log("mintable: ", mintable)
-  buildContract()
+    mintable = !mintable
+    console.log("mintable: ", mintable)
+    buildContract()
 })
 burnableButton.addEventListener("click", () => {
-  burnable = !burnable
-  console.log("burnable: ", burnable)
-  buildContract()
+    burnable = !burnable
+    console.log("burnable: ", burnable)
+    buildContract()
 })
 cappedButton.addEventListener("click", () => {
-  capped = !capped
-  console.log("capped: ", capped)
-  buildContract()
+    capped = !capped
+    console.log("capped: ", capped)
+    if (capped) {
+        capInput.style.display = "block"
+        capLabel.style.display = "block"
+    } else {
+        capInput.style.display = "none"
+        capLabel.style.display = "none"
+    }
+    buildContract()
 })
 
 nameInput.addEventListener("input", (e) => {
-  name = e.target.value
-  console.log(name)
-  buildContract()
+    name = e.target.value
+    console.log(name)
+    buildContract()
 })
 symbolInput.addEventListener("input", (e) => {
-  symbol = e.target.value
-  console.log(symbol)
-  buildContract()
+    symbol = e.target.value
+    console.log(symbol)
+    buildContract()
 })
 decimalsInput.addEventListener("input", (e) => {
-  decimals = e.target.value
-  console.log(decimals)
-  buildContract()
+    decimals = e.target.value
+    console.log(decimals)
+    buildContract()
 })
 capInput.addEventListener("input", (e) => {
-  cap = e.target.value
-  console.log(cap)
-  buildContract()
+    cap = e.target.value
+    console.log(cap)
+    buildContract()
 })
 
 // display contract string to console for now
 // console.log(contract);
 
 // document.addEventListener('keypress', () => {
-//     contractText.innerText = buildContract();
+//     contractCode.innerText = buildContract();
 // })
 
 function buildContract() {
-  let contract = `
+    let contract = `
 // SPDX-License-Identifier: ${SPDX}
 pragma solidity ${version};
 
@@ -82,12 +123,13 @@ contract ${name} {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
-`
-  if (capped) {
-    contract += "uint256 private immutable _cap;\n"
-  }
+    `
 
-  contract += `
+    if (capped) {
+        contract += "uint256 private immutable _cap;\n"
+    }
+
+    contract += `
     event Transfer(address indexed from, address indexed to, uint256 value);
 
     event Approval(address indexed owner, address indexed spender, uint256 value);
@@ -95,16 +137,17 @@ contract ${name} {
     constructor() public {
         _name = \"${name}\";
         _symbol = \"${symbol}\";
-        _decimals = \"${decimals}\";
+        _decimals = ${decimals};
         `
-  if (capped) {
-    contract += `_cap = ${cap};`
-  }
+    if (capped) {
+        contract += `_cap = ${cap};`
+    }
 
-  contract += `
-    }`
+    contract += `
+    }
+    `
 
-  const middleSection = `
+    const middleSection = `
     function name() public view virtual returns (string memory) {
         return _name;
     }
@@ -229,10 +272,10 @@ contract ${name} {
     }
 `
 
-  // contract += middleSection;
+    // contract += middleSection;
 
-  if (burnable) {
-    contract += `
+    if (burnable) {
+        contract += `
     function burn(uint256 amount) public virtual {
         _burn(msg.sender, amount);
     }
@@ -260,26 +303,26 @@ contract ${name} {
         _afterTokenTransfer(account, address(0), amount);
     }
     `
-  }
-  if (capped) {
-    contract += `
+    }
+    if (capped) {
+        contract += `
     function cap() public view virtual returns (uint256) {
         return _cap;
     }
     `
-  }
-  if (mintable) {
-    contract += `
+    }
+    if (mintable) {
+        contract += `
     function mint(address account, uint256 amount) public virtual {
         require(totalSupply() + amount <= cap(), "ERC20Capped: cap exceeded");
         _mint(account, amount);
     }
 `
-  }
+    }
 
-  contract += `
+    contract += `
 }
 `
 
-  contractText.innerText = contract
+    contractCode.innerHTML = contract
 }

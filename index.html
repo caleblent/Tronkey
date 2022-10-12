@@ -1,142 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tronkey</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body>
-    <h2>Tronkey app!</h2>
-
-    <div class="container">
-      <div class="buttons flex-container">
-        <div class="button" id="mintable">Mintable</div>
-        <div class="button" id="burnable">Burnable</div>
-        <div class="button" id="capped">Capped</div>
-      </div>
-
-      <div class="text-stuff">
-        <div class="text-left">
-          <label for="name" class="text-gray-900">Name:</label>
-          <input
-            type="text"
-            class="border block w-full p-2 mt-2 rounded"
-            id="name"
-            placeholder="ERC20"
-          />
-        </div>
-
-        <div class="text-left">
-          <label for="symbol" class="text-gray-900">Symbol:</label>
-          <input
-            type="text"
-            class="border block w-full p-2 mt-2 rounded"
-            id="symbol"
-            placeholder="ABC"
-          />
-        </div>
-
-        <div class="text-left">
-          <label for="decimals" class="text-gray-900">Decimals:</label>
-          <input
-            type="number"
-            class="border block w-full p-2 mt-2 rounded"
-            id="decimals"
-            value="18"
-            max="18"
-            min="0"
-          />
-        </div>
-
-        <div class="text-left">
-          <label for="cap" class="text-gray-900">Cap:</label>
-          <input
-            type="number"
-            class="border block w-full p-2 mt-2 rounded"
-            id="cap"
-            placeholder="1000000"
-            min="0"
-          />
-        </div>
-      </div>
-
-      <div class="contract">
-        <div id="contract-text"></div>
-      </div>
-
-      <!-- Default form login -->
-      <form class="text-center border border-light p-5" action="#!">
-        <p class="h4 mb-4">Sign in</p>
-
-        <!-- Email -->
-        <input
-          type="email"
-          id="defaultLoginFormEmail"
-          class="form-control mb-4"
-          placeholder="E-mail"
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tronkey</title>
+        <!-- <link rel="stylesheet" href="style.css" /> -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
         />
+    </head>
 
-        <!-- Password -->
-        <input
-          type="password"
-          id="defaultLoginFormPassword"
-          class="form-control mb-4"
-          placeholder="Password"
-        />
+    <body>
+        <div class="container">
+            <!-- Default form login -->
+            <form class="text-center border border-light p-5" name="calebForm">
+                <p class="h4 mb-4">ERC20 Token</p>
 
-        <div class="d-flex justify-content-around">
-          <div>
-            <!-- Remember me -->
-            <div class="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                id="defaultLoginFormRemember"
-              />
-              <label class="custom-control-label" for="defaultLoginFormRemember"
-                >Remember me</label
-              >
-            </div>
-          </div>
-          <div>
-            <!-- Forgot password -->
-            <a href="">Forgot password?</a>
-          </div>
+                <!-- Name -->
+                <label class="custom-control-label mb-2 float-left ml-2" for="name">Name</label>
+                <input type="text" id="name" class="form-control mb-4" value="ERC20" />
+
+                <!-- Symbol -->
+                <label class="custom-control-label mb-2 float-left ml-2" for="symbol">Symbol</label>
+                <input type="text" id="symbol" class="form-control mb-4" value="ABC" />
+
+                <!-- Decimals -->
+                <label class="custom-control-label mb-1 float-left ml-2" for="decimals">Decimals</label>
+                <input type="range" id="decimals" class="form-control mb-4" value="18" min="0" max="18" />
+
+                <!-- Boolean Values -->
+                <div class="d-flex justify-content-around mb-2">
+                    <!-- Preminted -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="preminted" />
+                        <label class="custom-control-label" for="preminted">Preminted</label>
+                    </div>
+                    <!-- Mintable -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="mintable" />
+                        <label class="custom-control-label" for="mintable">Mintable</label>
+                    </div>
+                    <!-- Burnable -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="burnable" />
+                        <label class="custom-control-label" for="burnable">Burnable</label>
+                    </div>
+                    <!-- Capped -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="capped" />
+                        <label class="custom-control-label" for="capped">Capped</label>
+                    </div>
+                </div>
+
+                <!-- Premint -->
+                <label class="custom-control-label mb-1 float-left ml-2" for="premint" id="premintLabel" style="display: none"
+                    >Premint</label
+                >
+                <input type="number" id="premint" class="form-control mb-4" value="" placeholder="0" style="display: none" />
+
+                <!-- Cap -->
+                <label class="custom-control-label mb-1 float-left ml-2" for="cap" id="capLabel" style="display: none">Cap</label>
+                <input type="number" id="cap" class="form-control mb-4" value="0" style="display: none" />
+
+                <!-- Generate Contract -->
+                <button class="btn btn-info btn-block my-4" type="submit">Generate Contract</button>
+
+                <!-- Generated Code -->
+                <div class="form-group shadow-textarea">
+                    <label for="contractCode">Contract Code</label>
+                    <textarea class="form-control z-depth-1" id="contractCode" rows="30" value="ddddd" readonly></textarea>
+                </div>
+            </form>
+            <!-- Default form login -->
         </div>
 
-        <!-- Sign in button -->
-        <button class="btn btn-info btn-block my-4" type="submit">
-          Sign in
-        </button>
-
-        <!-- Register -->
-        <p>
-          Not a member?
-          <a href="">Register</a>
-        </p>
-
-        <!-- Social login -->
-        <p>or sign in with:</p>
-
-        <a href="#" class="mx-2" role="button"
-          ><i class="fab fa-facebook-f light-blue-text"></i
-        ></a>
-        <a href="#" class="mx-2" role="button"
-          ><i class="fab fa-twitter light-blue-text"></i
-        ></a>
-        <a href="#" class="mx-2" role="button"
-          ><i class="fab fa-linkedin-in light-blue-text"></i
-        ></a>
-        <a href="#" class="mx-2" role="button"
-          ><i class="fab fa-github light-blue-text"></i
-        ></a>
-      </form>
-      <!-- Default form login -->
-    </div>
-
-    <script src="app.js"></script>
-  </body>
+        <script src="app.js"></script>
+    </body>
 </html>
