@@ -1,77 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tronkey</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <h2>Tronkey app!</h2>
 
     <div class="container">
-        <div class="buttons flex-container">
-            <div class="button" id="mintable">Mintable</div>
-            <div class="button" id="burnable">Burnable</div>
-            <div class="button" id="capped">Capped</div>
+      <div class="buttons flex-container">
+        <div class="button" id="mintable">Mintable</div>
+        <div class="button" id="burnable">Burnable</div>
+        <div class="button" id="capped">Capped</div>
+      </div>
+
+      <div class="text-stuff">
+        <div class="text-left">
+          <label for="name" class="text-gray-900">Name:</label>
+          <input
+            type="text"
+            class="border block w-full p-2 mt-2 rounded"
+            id="name"
+            placeholder="ERC20"
+          />
         </div>
 
-        <div class="text-stuff">
-            <div class="text-left">
-                <label for="name" class="text-gray-900">Name:</label>
-                <input
-                  type="text"
-                  class="border block w-full p-2 mt-2 rounded"
-                  id="name"
-                  placeholder="ERC20"
-                />
-            </div>
-
-            <div class="text-left">
-                <label for="symbol" class="text-gray-900">Symbol:</label>
-                <input
-                  type="text"
-                  class="border block w-full p-2 mt-2 rounded"
-                  id="symbol"
-                  placeholder="ABC"
-                />
-            </div>
-    
-            <div class="text-left">
-                <label for="decimals" class="text-gray-900">Decimals:</label>
-                <input
-                  type="number"
-                  class="border block w-full p-2 mt-2 rounded"
-                  id="decimals"
-                  value=18
-                  max=18
-                  min=0
-                />
-            </div>
-
-            <div class="text-left">
-                <label for="cap" class="text-gray-900">Cap:</label>
-                <input
-                  type="number"
-                  class="border block w-full p-2 mt-2 rounded"
-                  id="cap"
-                  placeholder="1000000"
-                  min=0
-                />
-            </div>
+        <div class="text-left">
+          <label for="symbol" class="text-gray-900">Symbol:</label>
+          <input
+            type="text"
+            class="border block w-full p-2 mt-2 rounded"
+            id="symbol"
+            placeholder="ABC"
+          />
         </div>
 
-        <div class="contract">
-            <div id="contract-text"></div>
+        <div class="text-left">
+          <label for="decimals" class="text-gray-900">Decimals:</label>
+          <input
+            type="number"
+            class="border block w-full p-2 mt-2 rounded"
+            id="decimals"
+            value="18"
+            max="18"
+            min="0"
+          />
         </div>
-        
 
+        <div class="text-left">
+          <label for="cap" class="text-gray-900">Cap:</label>
+          <input
+            type="number"
+            class="border block w-full p-2 mt-2 rounded"
+            id="cap"
+            placeholder="1000000"
+            min="0"
+          />
+        </div>
+      </div>
+
+      <div class="contract">
+        <div id="contract-text"></div>
+      </div>
+
+      <!-- Default form login -->
+      <form class="text-center border border-light p-5" action="#!">
+        <p class="h4 mb-4">Sign in</p>
+
+        <!-- Email -->
+        <input
+          type="email"
+          id="defaultLoginFormEmail"
+          class="form-control mb-4"
+          placeholder="E-mail"
+        />
+
+        <!-- Password -->
+        <input
+          type="password"
+          id="defaultLoginFormPassword"
+          class="form-control mb-4"
+          placeholder="Password"
+        />
+
+        <div class="d-flex justify-content-around">
+          <div>
+            <!-- Remember me -->
+            <div class="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="defaultLoginFormRemember"
+              />
+              <label class="custom-control-label" for="defaultLoginFormRemember"
+                >Remember me</label
+              >
+            </div>
+          </div>
+          <div>
+            <!-- Forgot password -->
+            <a href="">Forgot password?</a>
+          </div>
+        </div>
+
+        <!-- Sign in button -->
+        <button class="btn btn-info btn-block my-4" type="submit">
+          Sign in
+        </button>
+
+        <!-- Register -->
+        <p>
+          Not a member?
+          <a href="">Register</a>
+        </p>
+
+        <!-- Social login -->
+        <p>or sign in with:</p>
+
+        <a href="#" class="mx-2" role="button"
+          ><i class="fab fa-facebook-f light-blue-text"></i
+        ></a>
+        <a href="#" class="mx-2" role="button"
+          ><i class="fab fa-twitter light-blue-text"></i
+        ></a>
+        <a href="#" class="mx-2" role="button"
+          ><i class="fab fa-linkedin-in light-blue-text"></i
+        ></a>
+        <a href="#" class="mx-2" role="button"
+          ><i class="fab fa-github light-blue-text"></i
+        ></a>
+      </form>
+      <!-- Default form login -->
     </div>
 
     <script src="app.js"></script>
-</body>
-
+  </body>
 </html>
